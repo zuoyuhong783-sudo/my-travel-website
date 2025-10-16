@@ -50,25 +50,7 @@ Google Fonts: 引入 "Noto Sans SC" 字体，优化中文显示效果。
 
 🚀 在线访问
 
-你可以通过下面的链接在线访问这个网站：
-
-https://<你的GitHub用户名>.github.io/<你的仓库名>/
-
-重要：请务必将 <你的GitHub用户名> 和 <你的仓库名> 替换为你自己的真实信息。同时，请确保你的 HTML 文件已重命名为 index.html 以便链接能正常工作。
-
-📂 如何在本地运行
-
-将此仓库克隆到你的本地电脑：
-
-git clone [https://github.com/](https://github.com/)<你的GitHub用户名>/<你的仓库名>.git
-
-
-进入项目文件夹：
-
-cd <你的仓库名>
-
-
-在浏览器中直接打开 index.html (即你的 travel.html 文件) 即可。
+在浏览器中直接打开https://zuoyuhong783-sudo.github.io/my-travel-website/ 即可。
 
 致谢
 
