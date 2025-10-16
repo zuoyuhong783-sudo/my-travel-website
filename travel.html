@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>See You Again - 全球旅游内容平台</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <style type="text/tailwindcss">
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            scroll-behavior: smooth;
+        }
+        .nav-tab.active {
+            @apply text-blue-400 bg-gray-700/50 font-semibold;
+        }
+        .transition-custom {
+            @apply transition-all duration-300 ease-in-out;
+        }
+        .card-hover {
+            @apply hover:shadow-2xl hover:-translate-y-2;
+        }
+        .text-shadow-strong {
+            text-shadow: 0 2px 8px rgba(0,0,0,0.7);
+        }
+
+        /* 动态背景 */
+        .shapes div {
+            position: absolute;
+            border-radius: 50%;
+            background: linear-gradient(45deg, rgba(79, 138, 244, 0.1), rgba(138, 43, 226, 0.1));
+            animation: animate-bg 25s linear infinite;
+        }
+        
+        @keyframes animate-bg {
+            0%{ transform: translateY(10vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.8; }
+            90% { opacity: 0.8; }
+            100%{ transform: translateY(-110vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* 页面切换动画 */
+        .content-section {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .content-section.fade-out {
+            animation: fadeOut 0.3s ease-in-out forwards;
+        }
+
+        @keyframes fadeOut {
+            from { opacity: 1; transform: translateY(0); }
+            to { opacity: 0; transform: translateY(-20px); }
+        }
+
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-200">
+
+    <!-- 全局动态背景 -->
+    <div class="shapes fixed top-0 left-0 w-screen h-screen -z-10 overflow-hidden">
+        <div style="left: 10%; top: 100vh; width: 80px; height: 80px; animation-duration: 20s;"></div>
+        <div style="left: 85%; top: 100vh; width: 40px; height: 40px; animation-delay: 5s; animation-duration: 30s;"></div>
+        <div style="left: 20%; top: 100vh; width: 100px; height: 100px; animation-delay: 10s; animation-duration: 35s;"></div>
+        <div style="left: 50%; top: 100vh; width: 60px; height: 60px; animation-delay: 2s; animation-duration: 22s;"></div>
+        <div style="left: 90%; top: 100vh; width: 50px; height: 50px; animation-delay: 7s; animation-duration: 18s;"></div>
+    </div>
+
+    <!-- 导航栏 -->
+    <header class="sticky top-0 z-50 bg-gray-800/70 backdrop-blur-xl shadow-lg border-b border-gray-700">
+        <div class="container mx-auto px-4 py-3 flex items-center justify-between">
+            <a href="#" class="flex items-center space-x-2" onclick="switchTab('home'); return false;">
+                <i class="fa fa-globe text-3xl text-blue-400"></i>
+                <span class="text-2xl font-bold text-white">See You Again</span>
+            </a>
+            
+            <nav id="desktop-nav" class="hidden md:flex space-x-2 bg-gray-700/50 p-1 rounded-full">
+                <button class="nav-tab px-4 py-2 rounded-full text-sm font-medium text-gray-300 hover:bg-gray-600/50 transition-custom" data-target="home">首页</button>
+                <button class="nav-tab px-4 py-2 rounded-full text-sm font-medium text-gray-300 hover:bg-gray-600/50 transition-custom" data-target="destinations">全球目的地</button>
+                <button class="nav-tab px-4 py-2 rounded-full text-sm font-medium text-gray-300 hover:bg-gray-600/50 transition-custom" data-target="guides">精选旅游攻略</button>
+                <button class="nav-tab px-4 py-2 rounded-full text-sm font-medium text-gray-300 hover:bg-gray-600/50 transition-custom" data-target="details">景点详情</button>
+                <button class="nav-tab px-4 py-2 rounded-full text-sm font-medium text-gray-300 hover:bg-gray-600/50 transition-custom" data-target="login">登录/注册</button>
+            </nav>
+            
+            <button id="mobile-menu-button" class="md:hidden text-gray-300">
+                <i class="fa fa-bars text-xl"></i>
+            </button>
+        </div>
+        <div id="mobile-menu" class="hidden md:hidden bg-gray-800/90">
+             <nav class="flex flex-col items-center p-4 space-y-2">
+                <button class="nav-tab w-full text-center py-2 rounded-md text-gray-300 hover:bg-gray-700 transition-custom" data-target="home">首页</button>
+                <button class="nav-tab w-full text-center py-2 rounded-md text-gray-300 hover:bg-gray-700 transition-custom" data-target="destinations">全球目的地</button>
+                <button class="nav-tab w-full text-center py-2 rounded-md text-gray-300 hover:bg-gray-700 transition-custom" data-target="guides">精选旅游攻略</button>
+                <button class="nav-tab w-full text-center py-2 rounded-md text-gray-300 hover:bg-gray-700 transition-custom" data-target="details">景点详情</button>
+                <button class="nav-tab w-full text-center py-2 rounded-md text-gray-300 hover:bg-gray-700 transition-custom" data-target="login">登录/注册</button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8">
+        <!-- 首页区域 -->
+        <section id="home" class="content-section">
+            <div class="relative h-[600px] rounded-2xl overflow-hidden mb-12 shadow-2xl">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent z-10"></div>
+                <img src="https://picsum.photos/id/1036/1600/900" alt="[全球旅游风光的图片]" class="w-full h-full object-cover">
+                <div class="absolute left-10 bottom-10 z-20 max-w-2xl">
+                    <h1 class="text-5xl lg:text-6xl font-extrabold text-white text-shadow-strong mb-4">探索世界的每一个角落</h1>
+                    <p class="text-lg lg:text-xl text-white/90 mb-8">发现全球最美景点，规划属于你的完美旅程。</p>
+                    <button class="bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white px-8 py-4 rounded-full font-semibold transition-custom flex items-center shadow-lg hover:shadow-blue-500/30 transform hover:scale-105" onclick="switchTab('login')">
+                        <span>立即探索</span>
+                        <i class="fa fa-arrow-right ml-3"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="mb-16">
+                <h2 class="text-3xl font-bold mb-8 flex items-center text-white"><i class="fa fa-map-marker text-red-400 mr-3"></i>热门目的地</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <div class="bg-gray-800/50 backdrop-blur-md border border-gray-700 rounded-lg shadow-lg overflow-hidden transition-custom card-hover">
+                        <img src="C:/Users/35914/Desktop/zuoye/留学材料/作品集/旅游前端/images/铁塔预览.jpg" alt="巴黎埃菲尔铁塔的图片" class="w-full h-48 object-cover"> 
+                        <div class="p-5">
+                            <h3 class="font-bold text-xl mb-2 text-white">巴黎 · 法国</h3>
+                            <p class="text-gray-400 text-sm mb-4">浪漫之都，埃菲尔铁塔与卢浮宫的魅力。</p>
+                            <button class="text-blue-400 hover:text-blue-300 font-medium flex items-center detail-link" data-destination="paris"><span>查看详情</span><i class="fa fa-angle-right ml-1"></i></button>
+                        </div>
+                    </div>
+                    <div class="bg-gray-800/50 backdrop-blur-md border border-gray-700 rounded-lg shadow-lg overflow-hidden transition-custom card-hover">
+                        <img src="C:/Users/35914/Desktop/zuoye/留学材料/作品集/旅游前端/images/京都预览.jpg" alt="[京都的图片]" class="w-full h-48 object-cover">
+                        <div class="p-5">
+                            <h3 class="font-bold text-xl mb-2 text-white">京都 · 日本</h3>
+                            <p class="text-gray-400 text-sm mb-4">千年古都，樱花与古寺的和谐共生。</p>
+                            <button class="text-blue-400 hover:text-blue-300 font-medium flex items-center detail-link" data-destination="kyoto"><span>查看详情</span><i class="fa fa-angle-right ml-1"></i></button>
+                        </div>
+                    </div>
+                    <div class="bg-gray-800/50 backdrop-blur-md border border-gray-700 rounded-lg shadow-lg overflow-hidden transition-custom card-hover">
+                        <img src="C:/Users/35914/Desktop/zuoye/留学材料/作品集/旅游前端/images/阿尔卑斯预览.jpg" alt="[瑞士的图片]" class="w-full h-48 object-cover">
+                        <div class="p-5">
+                            <h3 class="font-bold text-xl mb-2 text-white">阿尔卑斯 · 瑞士</h3>
+                            <p class="text-gray-400 text-sm mb-4">雪山秘境，自然风光的极致体验。</p>
+                           <button class="text-blue-400 hover:text-blue-300 font-medium flex items-center detail-link" data-destination="alps"><span>查看详情</span><i class="fa fa-angle-right ml-1"></i></button>
+                        </div>
+                    </div>
+                     <div class="bg-gray-800/50 backdrop-blur-md border border-gray-700 rounded-lg shadow-lg overflow-hidden transition-custom card-hover">
+                        <img src="C:/Users/35914/Desktop/zuoye/留学材料/作品集/旅游前端/images/纽约预览.jpg" alt="[纽约的图片]" class="w-full h-48 object-cover">
+                        <div class="p-5">
+                            <h3 class="font-bold text-xl mb-2 text-white">纽约 · 美国</h3>
+                            <p class="text-gray-400 text-sm mb-4">不夜城的繁华，自由女神像的象征。</p>
+                            <button class="text-blue-400 hover:text-blue-300 font-medium flex items-center detail-link" data-destination="newyork"><span>查看详情</span><i class="fa fa-angle-right ml-1"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <h2 class="text-3xl font-bold mb-8 flex items-center text-white"><i class="fa fa-book text-green-400 mr-3"></i>精选旅游攻略</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                     <div class="bg-gray-800/50 backdrop-blur-md border border-gray-700 p-6 rounded-lg shadow-lg hover:border-blue-400/50 transition-custom card-hover">
+                        <h3 class="font-bold text-lg mb-3 text-white">欧洲三国十日游行程规划</h3>
+                        <p class="text-gray-400 text-sm mb-4 line-clamp-3">涵盖法国、意大利、西班牙的经典路线，兼顾景点打卡与美食体验，适合首次欧洲出行的游客...</p>
+                        <a href="#" class="text-blue-400 hover:underline font-medium" onclick="switchTab('guides'); return false;">阅读全文 →</a>
+                    </div>
+                     <div class="bg-gray-800/50 backdrop-blur-md border border-gray-700 p-6 rounded-lg shadow-lg hover:border-blue-400/50 transition-custom card-hover">
+                        <h3 class="font-bold text-lg mb-3 text-white">东南亚雨季旅行指南</h3>
+                        <p class="text-gray-400 text-sm mb-4 line-clamp-3">雨季的东南亚别有韵味，避开人流高峰，享受更优惠的价格，这份防雨防晒攻略请收好...</p>
+                        <a href="#" class="text-blue-400 hover:underline font-medium" onclick="switchTab('guides'); return false;">阅读全文 →</a>
+                    </div>
+                    <div class="bg-gray-800/50 backdrop-blur-md border border-gray-700 p-6 rounded-lg shadow-lg hover:border-blue-400/50 transition-custom card-hover">
+                        <h3 class="font-bold text-lg mb-3 text-white">亲子游必去的十大主题乐园</h3>
+                        <p class="text-gray-400 text-sm mb-4 line-clamp-3">从迪士尼到环球影城，全球最适合亲子互动的主题乐园盘点，带娃出行不再纠结...</p>
+                        <a href="#" class="text-blue-400 hover:underline font-medium" onclick="switchTab('guides'); return false;">阅读全文 →</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 全球目的地区域 -->
+        <section id="destinations" class="content-section hidden">
+            <h2 class="text-3xl font-bold mb-8 flex items-center text-white"><i class="fa fa-globe text-blue-400 mr-3"></i>全球目的地分类</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                 <div class="bg-gray-800/50 backdrop-blur-md border border-gray-700 rounded-xl shadow-lg overflow-hidden card-hover transition-custom">
+                    <div class="h-56 overflow-hidden"><img src="C:/Users/35914/Desktop/zuoye/留学材料/作品集/旅游前端/images/欧洲预览.jpg" alt="[欧洲风光的图片]" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500"></div>
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold mb-4 text-blue-400">欧洲</h3>
+                        <div class="space-y-3 mb-5 text-gray-300">
+                            <a href="#" class="flex items-center hover:text-white" onclick="showDetailAndScroll('paris'); return false;"><i class="fa fa-map-pin text-red-400 mr-3 w-4 text-center"></i><span>法国巴黎：埃菲尔铁塔</span></a>
+                            <div class="flex items-center"><i class="fa fa-map-pin text-red-400 mr-3 w-4 text-center"></i><span>意大利罗马：斗兽场</span></div>
+                            <div class="flex items-center"><i class="fa fa-map-pin text-red-400 mr-3 w-4 text-center"></i><span>西班牙巴塞罗那：圣家堂</span></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-800/50 backdrop-blur-md border border-gray-700 rounded-xl shadow-lg overflow-hidden card-hover transition-custom">
+                     <div class="h-56 overflow-hidden"><img src="C:/Users/35914/Desktop/zuoye/留学材料/作品集/旅游前端/images/亚洲预览.jpg" alt="[亚洲风光的图片]" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500"></div>
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold mb-4 text-blue-400">亚洲</h3>
+                        <div class="space-y-3 mb-5 text-gray-300">
+                            <div class="flex items-center"><i class="fa fa-map-pin text-red-400 mr-3 w-4 text-center"></i><span>中国北京：故宫、长城</span></div>
+                            <a href="#" class="flex items-center hover:text-white" onclick="showDetailAndScroll('kyoto'); return false;"><i class="fa fa-map-pin text-red-400 mr-3 w-4 text-center"></i><span>日本京都：伏见稻荷大社</span></a>
+                            <div class="flex items-center"><i class="fa fa-map-pin text-red-400 mr-3 w-4 text-center"></i><span>泰国曼谷：大皇宫</span></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-800/50 backdrop-blur-md border border-gray-700 rounded-xl shadow-lg overflow-hidden card-hover transition-custom">
+                     <div class="h-56 overflow-hidden"><img src="C:/Users/35914/Desktop/zuoye/留学材料/作品集/旅游前端/images/美洲预览.jpg" alt="[美洲风光的图片]" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500"></div>
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold mb-4 text-blue-400">美洲</h3>
+                        <div class="space-y-3 mb-5 text-gray-300">
+                             <a href="#" class="flex items-center hover:text-white" onclick="showDetailAndScroll('newyork'); return false;"><i class="fa fa-map-pin text-red-400 mr-3 w-4 text-center"></i><span>美国纽约：自由女神像</span></a>
+                            <div class="flex items-center"><i class="fa fa-map-pin text-red-400 mr-3 w-4 text-center"></i><span>加拿大温哥华：斯坦利公园</span></div>
+                            <div class="flex items-center"><i class="fa fa-map-pin text-red-400 mr-3 w-4 text-center"></i><span>秘鲁马丘比丘：印加古城</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 新增：精选旅游攻略区域 -->
+        <section id="guides" class="content-section hidden">
+            <h2 class="text-3xl font-bold mb-8 flex items-center text-white"><i class="fa fa-book text-green-400 mr-3"></i>精选旅游攻略</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-gray-800/50 backdrop-blur-md border border-gray-700 rounded-lg shadow-lg card-hover transition-custom">
+                    <img src="https://picsum.photos/id/20/800/500" class="w-full h-64 object-cover rounded-t-lg">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold mb-3 text-white">欧洲三国十日游行程规划</h3>
+                        <p class="text-gray-400 mb-4">从巴黎的浪漫到罗马的永恒，再到巴塞罗那的热情。本攻略为您详细规划了十天的行程，涵盖交通、住宿、美食和必游景点，让您的首次欧洲之旅轻松无忧。</p>
+                        <div class="flex flex-wrap gap-2"><span class="bg-blue-500/20 text-blue-300 text-xs px-2 py-1 rounded">法国</span><span class="bg-green-500/20 text-green-300 text-xs px-2 py-1 rounded">意大利</span><span class="bg-yellow-500/20 text-yellow-300 text-xs px-2 py-1 rounded">西班牙</span></div>
+                    </div>
+                </div>
+                 <div class="bg-gray-800/50 backdrop-blur-md border border-gray-700 rounded-lg shadow-lg card-hover transition-custom">
+                    <img src="https://picsum.photos/id/22/800/500" class="w-full h-64 object-cover rounded-t-lg">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold mb-3 text-white">东南亚雨季旅行指南</h3>
+                        <p class="text-gray-400 mb-4">谁说雨季不能出行？本指南将带您领略雨中东南亚的别样风情。避开人潮，享受更低的价格，探索泰国、越南、柬埔寨的独特魅力，并附上实用的防雨防潮小贴士。</p>
+                        <div class="flex flex-wrap gap-2"><span class="bg-red-500/20 text-red-300 text-xs px-2 py-1 rounded">泰国</span><span class="bg-teal-500/20 text-teal-300 text-xs px-2 py-1 rounded">越南</span><span class="bg-purple-500/20 text-purple-300 text-xs px-2 py-1 rounded">柬埔寨</span></div>
+                    </div>
+                </div>
+                 <div class="bg-gray-800/50 backdrop-blur-md border border-gray-700 rounded-lg shadow-lg card-hover transition-custom">
+                    <img src="https://picsum.photos/id/25/800/500" class="w-full h-64 object-cover rounded-t-lg">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold mb-3 text-white">亲子游必去的十大主题乐园</h3>
+                        <p class="text-gray-400 mb-4">带娃出行去哪里？这里为您盘点了全球最值得一去的十大主题乐园。从经典的迪士尼乐园到刺激的环球影城，再到寓教于乐的乐高乐园，总有一款适合您的家庭。</p>
+                         <div class="flex flex-wrap gap-2"><span class="bg-pink-500/20 text-pink-300 text-xs px-2 py-1 rounded">亲子</span><span class="bg-orange-500/20 text-orange-300 text-xs px-2 py-1 rounded">乐园</span><span class="bg-indigo-500/20 text-indigo-300 text-xs px-2 py-1 rounded">全球</span></div>
+                    </div>
+                </div>
+                 <div class="bg-gray-800/50 backdrop-blur-md border border-gray-700 rounded-lg shadow-lg card-hover transition-custom flex items-center justify-center text-center p-6">
+                    <div>
+                        <i class="fa fa-plus-circle text-5xl text-blue-400 mb-4"></i>
+                        <h3 class="text-2xl font-bold mb-2 text-white">更多攻略正在路上...</h3>
+                        <p class="text-gray-400">敬请期待我们为您带来更多精彩的旅行故事与实用指南。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 景点详情区域 -->
+        <section id="details" class="content-section hidden">
+            <div id="detail-card-paris" class="detail-card bg-gray-800/50 backdrop-blur-md border border-gray-700 rounded-xl shadow-lg overflow-hidden mb-8">
+                <div class="grid grid-cols-1 lg:grid-cols-5">
+                    <div class="lg:col-span-3 h-96 lg:h-auto"><img src="C:/Users/35914/Desktop/zuoye/留学材料/作品集/旅游前端/images/铁塔详细.jpg" alt="[埃菲尔铁塔的图片]" class="w-full h-full object-cover"></div>
+                    <div class="lg:col-span-2 p-8">
+                        <span class="bg-blue-500/20 text-blue-300 text-xs font-medium px-3 py-1 rounded-full">欧洲 · 法国</span>
+                        <h2 class="text-3xl font-bold my-4 text-white text-left">埃菲尔铁塔</h2>
+                        <p class="text-gray-400 mb-8 leading-relaxed">埃菲尔铁塔是法国巴黎的标志性建筑，为1889年世博会而建。如今，它不仅是巴黎的象征，也是全球最受欢迎的景点之一。</p>
+                    </div>
+                </div>
+            </div>
+            <div id="detail-card-kyoto" class="detail-card bg-gray-800/50 backdrop-blur-md border border-gray-700 rounded-xl shadow-lg overflow-hidden mb-8">
+                <div class="grid grid-cols-1 lg:grid-cols-5">
+                    <div class="lg:col-span-3 h-96 lg:h-auto"><img src="C:/Users/35914/Desktop/zuoye/留学材料/作品集/旅游前端/images/京都详细.jpg" alt="[伏见稻荷大社的图片]" class="w-full h-full object-cover"></div>
+                    <div class="lg:col-span-2 p-8">
+                         <span class="bg-red-500/20 text-red-300 text-xs font-medium px-3 py-1 rounded-full">亚洲 · 日本</span>
+                        <h2 class="text-3xl font-bold my-4 text-white text-left">伏见稻荷大社</h2>
+                        <p class="text-gray-400 mb-8 leading-relaxed">位于京都南部的稻荷山山麓，是遍布日本全国3万余座稻荷神社的总本社。以“千本鸟居”闻名于世。</p>
+                    </div>
+                </div>
+            </div>
+             <div id="detail-card-alps" class="detail-card bg-gray-800/50 backdrop-blur-md border border-gray-700 rounded-xl shadow-lg overflow-hidden mb-8">
+                <div class="grid grid-cols-1 lg:grid-cols-5">
+                    <div class="lg:col-span-3 h-96 lg:h-auto"><img src="C:/Users/35914/Desktop/zuoye/留学材料/作品集/旅游前端/images/阿尔卑斯详细.jpg" alt="[马特洪峰的图片]" class="w-full h-full object-cover"></div>
+                    <div class="lg:col-span-2 p-8">
+                        <span class="bg-green-500/20 text-green-300 text-xs font-medium px-3 py-1 rounded-full">欧洲 · 瑞士</span>
+                        <h2 class="text-3xl font-bold my-4 text-white text-left">马特洪峰</h2>
+                        <p class="text-gray-400 mb-8 leading-relaxed">阿尔卑斯山脉中最著名的山峰之一，其特殊的三角锥造型成为阿尔卑斯山的代表，每当朝晖夕映，长年积雪的山体折射出金属般的光芒。</p>
+                    </div>
+                </div>
+            </div>
+            <div id="detail-card-newyork" class="detail-card bg-gray-800/50 backdrop-blur-md border border-gray-700 rounded-xl shadow-lg overflow-hidden mb-8">
+                <div class="grid grid-cols-1 lg:grid-cols-5">
+                    <div class="lg:col-span-3 h-96 lg:h-auto"><img src="C:/Users/35914/Desktop/zuoye/留学材料/作品集/旅游前端/images/纽约详细.jpg" alt="[自由女神像的图片]" class="w-full h-full object-cover"></div>
+                    <div class="lg:col-span-2 p-8">
+                        <span class="bg-yellow-500/20 text-yellow-300 text-xs font-medium px-3 py-1 rounded-full">美洲 · 美国</span>
+                        <h2 class="text-3xl font-bold my-4 text-white text-left">自由女神像</h2>
+                        <p class="text-gray-400 mb-8 leading-relaxed">自由女神像全名为“自由女神像国家纪念碑”，正式名称是“自由照耀世界”，是法国于1876年赠送给美国的独立100周年礼物。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 登录/注册区域 -->
+        <section id="login" class="content-section hidden">
+            <div class="max-w-md mx-auto bg-gray-800/50 backdrop-blur-md border border-gray-700 rounded-xl shadow-lg overflow-hidden">
+                <div class="p-8">
+                    <div class="flex justify-center mb-6"><div class="w-20 h-20 bg-blue-500/20 rounded-full flex items-center justify-center"><i class="fa fa-user text-3xl text-blue-300"></i></div></div>
+                    <h2 class="text-3xl font-bold text-center mb-8 text-white">欢迎</h2>
+                    <form class="space-y-6">
+                        <div>
+                            <label for="username" class="block text-sm font-medium text-gray-400 mb-2">用户名/邮箱</label>
+                            <input type="text" id="username" class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="请输入用户名或邮箱">
+                        </div>
+                        <div>
+                            <label for="password" class="block text-sm font-medium text-gray-400 mb-2">密码</label>
+                            <input type="password" id="password" class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="请输入密码">
+                        </div>
+                        <div class="flex items-center justify-between"><div class="flex items-center"><input type="checkbox" id="remember" class="h-4 w-4 text-blue-600 bg-gray-700 border-gray-600 rounded focus:ring-blue-500"><label for="remember" class="ml-2 block text-sm text-gray-400">记住我</label></div><a href="#" class="text-sm text-blue-400 hover:text-blue-300">忘记密码？</a></div>
+                        <button type="submit" class="w-full bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white py-3 rounded-lg transition-custom font-semibold text-lg">登录</button>
+                    </form>
+                    <div class="mt-6 pt-6 border-t border-gray-700"><p class="text-center text-gray-400 text-sm mb-4">还没有账号？</p><button class="w-full bg-gray-600 hover:bg-gray-500 text-white py-3 rounded-lg transition-custom font-semibold">立即注册</button></div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-900/80 backdrop-blur-lg mt-16 border-t border-gray-800">
+        <div class="container mx-auto px-4 py-12">
+            <div class="text-center text-gray-500 text-sm">
+                <p>© 2025 See You Again 旅游平台. 左宇宏 作品集项目.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        let currentSection = 'home';
+        const sections = document.querySelectorAll('.content-section');
+        const tabs = document.querySelectorAll('.nav-tab');
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const detailLinks = document.querySelectorAll('.detail-link');
+
+        function switchTab(targetId, targetElement = null) {
+            if (currentSection === targetId && !targetElement) return;
+
+            const currentSectionEl = document.getElementById(currentSection);
+            
+            // Fade out current section
+            if (currentSectionEl) {
+                currentSectionEl.classList.add('fade-out');
+                setTimeout(() => {
+                    currentSectionEl.classList.add('hidden');
+                    currentSectionEl.classList.remove('fade-out');
+                    
+                    // Activate new section
+                    activateNewSection(targetId, targetElement);
+                }, 300); // Match animation duration
+            } else {
+                 activateNewSection(targetId, targetElement);
+            }
+        }
+
+        function activateNewSection(targetId, targetElement) {
+            currentSection = targetId;
+
+            tabs.forEach(t => {
+                if (t.getAttribute('data-target') === targetId) {
+                    t.classList.add('active');
+                } else {
+                    t.classList.remove('active');
+                }
+            });
+            
+            const newSectionEl = document.getElementById(targetId);
+            newSectionEl.classList.remove('hidden');
+
+            if (targetElement) {
+                targetElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            } else {
+                window.scrollTo(0, 0);
+            }
+
+            if (!mobileMenu.classList.contains('hidden')) {
+                mobileMenu.classList.add('hidden');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Tab switching
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const target = this.getAttribute('data-target');
+                    switchTab(target);
+                });
+            });
+
+            // Mobile menu toggle
+            mobileMenuButton.addEventListener('click', function() {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            // Detail links from home page
+            detailLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    const destination = this.getAttribute('data-destination');
+                    const targetCard = document.getElementById(`detail-card-${destination}`);
+                    switchTab('details', targetCard);
+                });
+            });
+            
+            // Initial load
+            switchTab('home');
+        });
+
+        // Helper for links inside other pages
+        function showDetailAndScroll(destinationKey) {
+            const targetCard = document.getElementById(`detail-card-${destinationKey}`);
+            switchTab('details', targetCard);
+        }
+
+    </script>
+</body>
+</html>
+
