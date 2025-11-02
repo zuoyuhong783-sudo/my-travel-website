@@ -28,7 +28,6 @@
             text-shadow: 0 2px 8px rgba(0,0,0,0.7);
         }
 
-        /* 动态背景 */
         .shapes div {
             position: absolute;
             border-radius: 50%;
@@ -43,7 +42,6 @@
             100%{ transform: translateY(-110vh) rotate(360deg); opacity: 0; }
         }
 
-        /* 页面切换动画 */
         .content-section {
             animation: fadeIn 0.5s ease-in-out;
         }
@@ -66,7 +64,6 @@
 </head>
 <body class="bg-gray-900 text-gray-200">
 
-    <!-- 全局动态背景 -->
     <div class="shapes fixed top-0 left-0 w-screen h-screen -z-10 overflow-hidden">
         <div style="left: 10%; top: 100vh; width: 80px; height: 80px; animation-duration: 20s;"></div>
         <div style="left: 85%; top: 100vh; width: 40px; height: 40px; animation-delay: 5s; animation-duration: 30s;"></div>
@@ -75,7 +72,6 @@
         <div style="left: 90%; top: 100vh; width: 50px; height: 50px; animation-delay: 7s; animation-duration: 18s;"></div>
     </div>
 
-    <!-- 导航栏 -->
     <header class="sticky top-0 z-50 bg-gray-800/70 backdrop-blur-xl shadow-lg border-b border-gray-700">
         <div class="container mx-auto px-4 py-3 flex items-center justify-between">
             <a href="#" class="flex items-center space-x-2" onclick="switchTab('home'); return false;">
@@ -107,7 +103,6 @@
     </header>
 
     <main class="container mx-auto px-4 py-8">
-        <!-- 首页区域 -->
         <section id="home" class="content-section">
             <div class="relative h-[600px] rounded-2xl overflow-hidden mb-12 shadow-2xl">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent z-10"></div>
@@ -182,7 +177,6 @@
             </div>
         </section>
 
-        <!-- 全球目的地区域 -->
         <section id="destinations" class="content-section hidden">
             <h2 class="text-3xl font-bold mb-8 flex items-center text-white"><i class="fa fa-globe text-blue-400 mr-3"></i>全球目的地分类</h2>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -222,7 +216,6 @@
             </div>
         </section>
 
-        <!-- 新增：精选旅游攻略区域 -->
         <section id="guides" class="content-section hidden">
             <h2 class="text-3xl font-bold mb-8 flex items-center text-white"><i class="fa fa-book text-green-400 mr-3"></i>精选旅游攻略</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -260,7 +253,6 @@
             </div>
         </section>
 
-        <!-- 景点详情区域 -->
         <section id="details" class="content-section hidden">
             <div id="detail-card-paris" class="detail-card bg-gray-800/50 backdrop-blur-md border border-gray-700 rounded-xl shadow-lg overflow-hidden mb-8">
                 <div class="grid grid-cols-1 lg:grid-cols-5">
@@ -304,7 +296,6 @@
             </div>
         </section>
 
-        <!-- 登录/注册区域 -->
         <section id="login" class="content-section hidden">
             <div class="max-w-md mx-auto bg-gray-800/50 backdrop-blur-md border border-gray-700 rounded-xl shadow-lg overflow-hidden">
                 <div class="p-8">
@@ -349,16 +340,14 @@
 
             const currentSectionEl = document.getElementById(currentSection);
             
-            // Fade out current section
             if (currentSectionEl) {
                 currentSectionEl.classList.add('fade-out');
                 setTimeout(() => {
                     currentSectionEl.classList.add('hidden');
                     currentSectionEl.classList.remove('fade-out');
                     
-                    // Activate new section
                     activateNewSection(targetId, targetElement);
-                }, 300); // Match animation duration
+                }, 300); 
             } else {
                  activateNewSection(targetId, targetElement);
             }
@@ -390,7 +379,6 @@
         }
 
         document.addEventListener('DOMContentLoaded', function() {
-            // Tab switching
             tabs.forEach(tab => {
                 tab.addEventListener('click', function() {
                     const target = this.getAttribute('data-target');
@@ -398,12 +386,10 @@
                 });
             });
 
-            // Mobile menu toggle
             mobileMenuButton.addEventListener('click', function() {
                 mobileMenu.classList.toggle('hidden');
             });
 
-            // Detail links from home page
             detailLinks.forEach(link => {
                 link.addEventListener('click', function() {
                     const destination = this.getAttribute('data-destination');
@@ -412,11 +398,9 @@
                 });
             });
             
-            // Initial load
             switchTab('home');
         });
 
-        // Helper for links inside other pages
         function showDetailAndScroll(destinationKey) {
             const targetCard = document.getElementById(`detail-card-${destinationKey}`);
             switchTab('details', targetCard);
@@ -425,4 +409,3 @@
     </script>
 </body>
 </html>
-
